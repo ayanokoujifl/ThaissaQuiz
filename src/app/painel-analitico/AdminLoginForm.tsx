@@ -2,17 +2,19 @@
 
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { Lock, ArrowRight, ShieldAlert } from 'lucide-react';
+import { Lock, ArrowRight, ShieldAlert, Eye, EyeOff } from 'lucide-react';
 
 export function AdminLoginForm() {
   const router = useRouter();
   const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!password) return;
+    const cleanPassword = password.trim();
+    if (!cleanPassword) return;
 
     setLoading(true);
     setError(null);
@@ -21,7 +23,7 @@ export function AdminLoginForm() {
       const res = await fetch('/api/admin/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ password }),
+        body: JSON.stringify({ password: cleanPassword }),
       });
 
       if (!res.ok) {
@@ -29,7 +31,8 @@ export function AdminLoginForm() {
         throw new Error(data.error || 'Acesso negado.');
       }
 
-      router.refresh();
+      // Hard reload or push to ensure server component re-executes verifyAdminSession
+      window.location.href = '/painel-analitico';
     } catch (err: unknown) {
       if (err instanceof Error) {
         setError(err.message);
@@ -57,14 +60,25 @@ export function AdminLoginForm() {
             <label className="block text-xs font-bold uppercase tracking-wider text-fumec-navy mb-1.5">
               Senha de Acesso
             </label>
-            <input
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              placeholder="Digite a chave mestra..."
-              autoFocus
-              className="w-full px-4 py-3 rounded-xl border border-fumec-border focus:border-fumec-primary focus:outline-none text-sm transition-colors"
-            />
+            <div className="relative">
+              <input
+                type={showPassword ? 'text' : 'password'}
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder="Digite a senha mestra..."
+                autoComplete="current-password"
+                className="w-full px-4 py-3.5 pr-11 rounded-xl border border-fumec-border focus:border-fumec-primary focus:ring-2 focus:ring-fumec-primary/20 focus:outline-none text-sm transition-all"
+              />
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                tabIndex={-1}
+                aria-label={showPassword ? 'Ocultar senha' : 'Exibir senha'}
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 p-1"
+              >
+                {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+              </button>
+            </div>
           </div>
 
           {error && (
