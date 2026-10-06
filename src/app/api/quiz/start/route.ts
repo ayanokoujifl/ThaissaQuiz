@@ -15,7 +15,15 @@ export async function POST(req: Request) {
       );
     }
 
-    const session = await QuizService.startSession(Number(periodo), String(turno));
+    const normalizedTurno = String(turno).trim().toUpperCase();
+    if (!['MANHA', 'NOITE', 'EAD'].includes(normalizedTurno)) {
+      return NextResponse.json(
+        { error: 'Turno inválido. Escolha entre MANHA, NOITE ou EAD.' },
+        { status: 400 }
+      );
+    }
+
+    const session = await QuizService.startSession(Number(periodo), normalizedTurno);
     return NextResponse.json({ sessionId: session.id }, { status: 201 });
   } catch (error) {
     console.error('Error starting quiz session:', error);

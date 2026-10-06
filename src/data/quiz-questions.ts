@@ -1,4 +1,5 @@
 export type AreaCode = 'RH' | 'MKT' | 'FIN' | 'LOG' | 'COM' | 'EMP';
+export type Turno = 'MANHA' | 'NOITE' | 'EAD';
 
 export interface AreaInfo {
   code: AreaCode;

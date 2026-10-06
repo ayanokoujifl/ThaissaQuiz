@@ -110,6 +110,7 @@ export function DashboardView({
                 <option value="">Todos os Turnos</option>
                 <option value="MANHA">Manhã</option>
                 <option value="NOITE">Noite</option>
+                <option value="EAD">EAD</option>
               </select>
             </div>
           </div>

@@ -4,6 +4,7 @@ import React, { useState, useRef } from 'react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { Header } from '@/components/Header';
+import { Turno } from '@/data/quiz-questions';
 import {
   Sparkles,
   ArrowRight,
@@ -12,6 +13,7 @@ import {
   CheckCircle2,
   Sun,
   Moon,
+  Laptop,
   AlertCircle,
   Share2,
   Compass,
@@ -74,7 +76,7 @@ const AREAS_PREVIEW = [
 export default function HomePage() {
   const router = useRouter();
   const [periodo, setPeriodo] = useState<number | null>(null);
-  const [turno, setTurno] = useState<'MANHA' | 'NOITE' | null>(null);
+  const [turno, setTurno] = useState<Turno | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const formRef = useRef<HTMLFormElement>(null);
@@ -345,7 +347,7 @@ export default function HomePage() {
                       {turno && (
                         <span className="text-fumec-primary font-bold normal-case text-xs flex items-center gap-1">
                           <CheckCircle2 className="w-3.5 h-3.5" aria-hidden="true" />
-                          {turno === 'MANHA' ? 'Manhã' : 'Noite'}
+                          {turno === 'MANHA' ? 'Manhã' : turno === 'NOITE' ? 'Noite' : 'EAD'}
                         </span>
                       )}
                     </div>
@@ -353,11 +355,12 @@ export default function HomePage() {
                     <div
                       role="radiogroup"
                       aria-labelledby="turno-heading"
-                      className="grid grid-cols-2 gap-3 pt-1"
+                      className="grid grid-cols-3 gap-2 sm:gap-3 pt-1"
                     >
                       {[
                         { key: 'MANHA' as const, label: 'Manhã', icon: Sun },
                         { key: 'NOITE' as const, label: 'Noite', icon: Moon },
+                        { key: 'EAD' as const, label: 'EAD', icon: Laptop },
                       ].map((item) => {
                         const isChecked = turno === item.key;
                         const Icon = item.icon;
@@ -372,7 +375,7 @@ export default function HomePage() {
                               setTurno(item.key);
                               if (error) setError(null);
                             }}
-                            className={`min-h-[54px] px-4 w-full flex items-center justify-center gap-2.5 rounded-xl border text-sm font-bold select-none transition-all cursor-pointer touch-manipulation focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fumec-primary focus-visible:ring-offset-2 ${
+                            className={`min-h-[52px] px-2 sm:px-4 w-full flex items-center justify-center gap-1.5 sm:gap-2.5 rounded-xl border text-xs sm:text-sm font-bold select-none transition-all cursor-pointer touch-manipulation focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fumec-primary focus-visible:ring-offset-2 ${
                               isChecked
                                 ? 'bg-fumec-primary text-white border-fumec-primary shadow-sm scale-[1.02]'
                                 : 'bg-white text-slate-700 border-slate-200 hover:border-fumec-primary/60 hover:bg-slate-50 active:scale-95'

@@ -10,7 +10,7 @@ datasource db {
 model QuizSession {
   id               String       @id @default(uuid())
   periodo          Int          // 1 a 8
-  turno            String       // 'MANHA' | 'NOITE'
+  turno            String       // 'MANHA' | 'NOITE' | 'EAD'
   status           String       @default("STARTED") // 'STARTED' | 'COMPLETED'
   primaryProfile   String?      // 'RH' | 'MKT' | 'FIN' | 'LOG' | 'COM' | 'EMP'
   secondaryProfile String?      // Empate
