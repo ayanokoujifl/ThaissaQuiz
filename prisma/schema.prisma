@@ -1,0 +1,36 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model QuizSession {
+  id               String       @id @default(uuid())
+  periodo          Int          // 1 a 8
+  turno            String       // 'MANHA' | 'NOITE'
+  status           String       @default("STARTED") // 'STARTED' | 'COMPLETED'
+  primaryProfile   String?      // 'RH' | 'MKT' | 'FIN' | 'LOG' | 'COM' | 'EMP'
+  secondaryProfile String?      // Empate
+  scores           String?      // JSON serializado de scores { RH: 40, MKT: 20, ... }
+  createdAt        DateTime     @default(now())
+  completedAt      DateTime?
+  answers          QuizAnswer[]
+
+  @@index([status])
+  @@index([primaryProfile])
+}
+
+model QuizAnswer {
+  id            String      @id @default(uuid())
+  sessionId     String
+  session       QuizSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  questionIndex Int         // 1 a 10
+  selectedArea  String      // 'RH' | 'MKT' | 'FIN' | 'LOG' | 'COM' | 'EMP'
+  createdAt     DateTime    @default(now())
+
+  @@unique([sessionId, questionIndex])
+  @@index([questionIndex, selectedArea])
+}

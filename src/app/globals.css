@@ -1,26 +1,35 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #f5f8fa;
+  --foreground: #002746;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+@theme {
+  --color-fumec-primary: #00629e;
+  --color-fumec-navy: #002746;
+  --color-fumec-secondary: #175873;
+  --color-fumec-accent: #df4000;
+  --color-fumec-cyan: #0080cf;
+  --color-fumec-surface: #f5f8fa;
+  --color-fumec-card: #ffffff;
+  --color-fumec-border: #e2eaf0;
+  --color-fumec-muted: #6d6e71;
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --color-area-rh: #0284c7;
+  --color-area-mkt: #7c3aed;
+  --color-area-fin: #059669;
+  --color-area-log: #ea580c;
+  --color-area-com: #dc2626;
+  --color-area-emp: #d97706;
+
+  --font-sans: var(--font-figtree), system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
 }
 
 body {
-  background: var(--background);
+  background-color: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
