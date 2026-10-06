@@ -60,21 +60,23 @@ export function AdminLoginForm() {
             <label className="block text-xs font-bold uppercase tracking-wider text-fumec-navy mb-1.5">
               Senha de Acesso
             </label>
-            <div className="relative">
+            <div className="relative flex items-center">
               <input
                 type={showPassword ? 'text' : 'password'}
                 value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                onChange={(e) => {
+                  setPassword(e.target.value);
+                  if (error) setError(null);
+                }}
                 placeholder="Digite a senha mestra..."
                 autoComplete="current-password"
-                className="w-full px-4 py-3.5 pr-11 rounded-xl border border-fumec-border focus:border-fumec-primary focus:ring-2 focus:ring-fumec-primary/20 focus:outline-none text-sm transition-all"
+                className="w-full px-4 py-3.5 pr-12 rounded-xl border border-fumec-border focus:border-fumec-primary focus:ring-2 focus:ring-fumec-primary/20 focus:outline-none text-sm transition-all"
               />
               <button
                 type="button"
-                onClick={() => setShowPassword(!showPassword)}
-                tabIndex={-1}
+                onClick={() => setShowPassword((prev) => !prev)}
                 aria-label={showPassword ? 'Ocultar senha' : 'Exibir senha'}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 p-1"
+                className="absolute right-3.5 text-slate-400 hover:text-slate-700 p-1.5 rounded-lg hover:bg-slate-100 cursor-pointer transition-colors z-10"
               >
                 {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
               </button>
@@ -90,11 +92,11 @@ export function AdminLoginForm() {
 
           <button
             type="submit"
-            disabled={loading || !password}
+            disabled={loading}
             className={`w-full py-3.5 px-4 rounded-xl font-bold text-sm flex items-center justify-center gap-2 transition-all shadow-sm ${
-              loading || !password
-                ? 'bg-slate-200 text-slate-400 cursor-not-allowed'
-                : 'bg-fumec-primary text-white hover:bg-fumec-navy active:scale-95'
+              loading
+                ? 'bg-slate-300 text-slate-500 cursor-wait'
+                : 'bg-fumec-primary text-white hover:bg-fumec-navy active:scale-95 cursor-pointer'
             }`}
           >
             {loading ? 'Validando...' : 'Entrar no Painel'}

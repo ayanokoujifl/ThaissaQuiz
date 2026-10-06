@@ -292,114 +292,99 @@ export default function HomePage() {
                   aria-label="Configuração inicial do participante"
                 >
                   {/* Seletor de Período */}
-                  <fieldset className="space-y-2">
-                    <legend className="w-full flex items-center justify-between text-xs font-bold uppercase tracking-wider text-slate-800">
-                      <span>Qual o seu período na faculdade?</span>
+                  <div className="space-y-2">
+                    <div className="w-full flex items-center justify-between text-xs font-bold uppercase tracking-wider text-slate-800">
+                      <span id="periodo-heading">Qual o seu período na faculdade?</span>
                       {periodo && (
                         <span className="text-fumec-primary font-bold normal-case text-xs flex items-center gap-1">
                           <CheckCircle2 className="w-3.5 h-3.5" aria-hidden="true" />
                           {periodo}º período
                         </span>
                       )}
-                    </legend>
+                    </div>
                     <p id="periodo-help" className="text-[11px] text-slate-500">
                       Toque na opção correspondente ao seu semestre atual (1º ao 8º).
                     </p>
 
                     <div
                       role="radiogroup"
-                      aria-labelledby="periodo-help"
+                      aria-labelledby="periodo-heading"
+                      aria-describedby="periodo-help"
                       className="grid grid-cols-4 sm:grid-cols-8 gap-2 pt-1"
                     >
                       {[1, 2, 3, 4, 5, 6, 7, 8].map((num) => {
                         const isChecked = periodo === num;
-                        const inputId = `periodo-opt-${num}`;
                         return (
-                          <div key={num} className="relative">
-                            <input
-                              type="radio"
-                              id={inputId}
-                              name="periodo"
-                              value={num}
-                              checked={isChecked}
-                              onChange={() => {
-                                setPeriodo(num);
-                                if (error) setError(null);
-                              }}
-                              className="sr-only peer"
-                              aria-label={`${num}º período`}
-                            />
-                            <label
-                              htmlFor={inputId}
-                              className={`min-h-[48px] w-full flex items-center justify-center rounded-xl border text-sm sm:text-base font-bold cursor-pointer select-none transition-all touch-manipulation focus-within:ring-2 focus-within:ring-fumec-primary focus-within:ring-offset-2 ${
-                                isChecked
-                                  ? 'bg-fumec-primary text-white border-fumec-primary shadow-sm scale-[1.02]'
-                                  : 'bg-white text-slate-700 border-slate-200 hover:border-fumec-primary/60 hover:bg-slate-50 active:scale-95'
-                              }`}
-                            >
-                              {num}º
-                            </label>
-                          </div>
+                          <button
+                            key={num}
+                            type="button"
+                            role="radio"
+                            aria-checked={isChecked}
+                            aria-label={`${num}º período`}
+                            onClick={() => {
+                              setPeriodo(num);
+                              if (error) setError(null);
+                            }}
+                            className={`min-h-[50px] w-full flex items-center justify-center rounded-xl border text-sm sm:text-base font-bold select-none transition-all cursor-pointer touch-manipulation focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fumec-primary focus-visible:ring-offset-2 ${
+                              isChecked
+                                ? 'bg-fumec-primary text-white border-fumec-primary shadow-sm scale-[1.02]'
+                                : 'bg-white text-slate-700 border-slate-200 hover:border-fumec-primary/60 hover:bg-slate-50 active:scale-95'
+                            }`}
+                          >
+                            {num}º
+                          </button>
                         );
                       })}
                     </div>
-                  </fieldset>
+                  </div>
 
                   {/* Seletor de Turno */}
-                  <fieldset className="space-y-2">
-                    <legend className="w-full flex items-center justify-between text-xs font-bold uppercase tracking-wider text-slate-800">
-                      <span>Qual é o seu turno?</span>
+                  <div className="space-y-2">
+                    <div className="w-full flex items-center justify-between text-xs font-bold uppercase tracking-wider text-slate-800">
+                      <span id="turno-heading">Qual é o seu turno?</span>
                       {turno && (
                         <span className="text-fumec-primary font-bold normal-case text-xs flex items-center gap-1">
                           <CheckCircle2 className="w-3.5 h-3.5" aria-hidden="true" />
                           {turno === 'MANHA' ? 'Manhã' : 'Noite'}
                         </span>
                       )}
-                    </legend>
+                    </div>
 
                     <div
                       role="radiogroup"
-                      aria-label="Seleção de turno de estudos"
+                      aria-labelledby="turno-heading"
                       className="grid grid-cols-2 gap-3 pt-1"
                     >
                       {[
-                        { key: 'MANHA', label: 'Manhã', icon: Sun },
-                        { key: 'NOITE', label: 'Noite', icon: Moon },
+                        { key: 'MANHA' as const, label: 'Manhã', icon: Sun },
+                        { key: 'NOITE' as const, label: 'Noite', icon: Moon },
                       ].map((item) => {
                         const isChecked = turno === item.key;
-                        const inputId = `turno-opt-${item.key.toLowerCase()}`;
                         const Icon = item.icon;
                         return (
-                          <div key={item.key} className="relative">
-                            <input
-                              type="radio"
-                              id={inputId}
-                              name="turno"
-                              value={item.key}
-                              checked={isChecked}
-                              onChange={() => {
-                                setTurno(item.key as 'MANHA' | 'NOITE');
-                                if (error) setError(null);
-                              }}
-                              className="sr-only peer"
-                              aria-label={`Turno ${item.label}`}
-                            />
-                            <label
-                              htmlFor={inputId}
-                              className={`min-h-[52px] px-4 w-full flex items-center justify-center gap-2 rounded-xl border text-sm font-bold cursor-pointer select-none transition-all touch-manipulation focus-within:ring-2 focus-within:ring-fumec-primary focus-within:ring-offset-2 ${
-                                isChecked
-                                  ? 'bg-fumec-primary text-white border-fumec-primary shadow-sm scale-[1.02]'
-                                  : 'bg-white text-slate-700 border-slate-200 hover:border-fumec-primary/60 hover:bg-slate-50 active:scale-95'
-                              }`}
-                            >
-                              <Icon className="w-4 h-4 flex-shrink-0" aria-hidden="true" />
-                              <span>{item.label}</span>
-                            </label>
-                          </div>
+                          <button
+                            key={item.key}
+                            type="button"
+                            role="radio"
+                            aria-checked={isChecked}
+                            aria-label={`Turno ${item.label}`}
+                            onClick={() => {
+                              setTurno(item.key);
+                              if (error) setError(null);
+                            }}
+                            className={`min-h-[54px] px-4 w-full flex items-center justify-center gap-2.5 rounded-xl border text-sm font-bold select-none transition-all cursor-pointer touch-manipulation focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fumec-primary focus-visible:ring-offset-2 ${
+                              isChecked
+                                ? 'bg-fumec-primary text-white border-fumec-primary shadow-sm scale-[1.02]'
+                                : 'bg-white text-slate-700 border-slate-200 hover:border-fumec-primary/60 hover:bg-slate-50 active:scale-95'
+                            }`}
+                          >
+                            <Icon className="w-4 h-4 flex-shrink-0" aria-hidden="true" />
+                            <span>{item.label}</span>
+                          </button>
                         );
                       })}
                     </div>
-                  </fieldset>
+                  </div>
 
                   {/* Feedback de Erro Acessível */}
                   {error && (
